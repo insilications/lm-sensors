@@ -4,15 +4,15 @@
 #
 Name     : lm-sensors
 Version  : 3.5.0
-Release  : 2
+Release  : 3
 URL      : https://github.com/lm-sensors/lm-sensors/archive/V3-5-0.tar.gz
 Source0  : https://github.com/lm-sensors/lm-sensors/archive/V3-5-0.tar.gz
 Summary  : No detailed summary available
 Group    : Development/Tools
 License  : GPL-2.0 LGPL-2.1
 Requires: lm-sensors-bin = %{version}-%{release}
+Requires: lm-sensors-lib = %{version}-%{release}
 Requires: lm-sensors-license = %{version}-%{release}
-Requires: lm-sensors-plugins = %{version}-%{release}
 BuildRequires : bison
 BuildRequires : flex
 Patch1: build.patch
@@ -36,6 +36,7 @@ bin components for the lm-sensors package.
 %package dev
 Summary: dev components for the lm-sensors package.
 Group: Development
+Requires: lm-sensors-lib = %{version}-%{release}
 Requires: lm-sensors-bin = %{version}-%{release}
 Provides: lm-sensors-devel = %{version}-%{release}
 
@@ -51,20 +52,21 @@ Group: Documentation
 doc components for the lm-sensors package.
 
 
+%package lib
+Summary: lib components for the lm-sensors package.
+Group: Libraries
+Requires: lm-sensors-license = %{version}-%{release}
+
+%description lib
+lib components for the lm-sensors package.
+
+
 %package license
 Summary: license components for the lm-sensors package.
 Group: Default
 
 %description license
 license components for the lm-sensors package.
-
-
-%package plugins
-Summary: plugins components for the lm-sensors package.
-Group: Default
-
-%description plugins
-plugins components for the lm-sensors package.
 
 
 %prep
@@ -76,12 +78,12 @@ export http_proxy=http://127.0.0.1:9/
 export https_proxy=http://127.0.0.1:9/
 export no_proxy=localhost,127.0.0.1,0.0.0.0
 export LANG=C
-export SOURCE_DATE_EPOCH=1546267448
+export SOURCE_DATE_EPOCH=1546267705
 make  %{?_smp_mflags}
 
 
 %install
-export SOURCE_DATE_EPOCH=1546267448
+export SOURCE_DATE_EPOCH=1546267705
 rm -rf %{buildroot}
 mkdir -p %{buildroot}/usr/share/package-licenses/lm-sensors
 cp COPYING %{buildroot}/usr/share/package-licenses/lm-sensors/COPYING
@@ -119,18 +121,18 @@ cp -a %{buildroot}/etc  %{buildroot}/usr/share/doc/lm-sensors/examples
 %defattr(-,root,root,-)
 /usr/include/sensors/error.h
 /usr/include/sensors/sensors.h
-/usr/lib/libsensors.so
+/usr/lib64/libsensors.so
 
 %files doc
 %defattr(0644,root,root,0755)
 %doc /usr/share/doc/lm\-sensors/*
 
+%files lib
+%defattr(-,root,root,-)
+/usr/lib64/libsensors.so.5
+/usr/lib64/libsensors.so.5.0.0
+
 %files license
 %defattr(0644,root,root,0755)
 /usr/share/package-licenses/lm-sensors/COPYING
 /usr/share/package-licenses/lm-sensors/COPYING.LGPL
-
-%files plugins
-%defattr(-,root,root,-)
-/usr/lib/libsensors.so.5
-/usr/lib/libsensors.so.5.0.0
