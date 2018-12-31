@@ -1,0 +1,2 @@
+mkdir -p %{buildroot}/usr/share/doc/lm-sensors/examples
+cp -a %{buildroot}/etc  %{buildroot}/usr/share/doc/lm-sensors/examples

@@ -4,15 +4,18 @@
 #
 Name     : lm-sensors
 Version  : 3.5.0
-Release  : 1
+Release  : 2
 URL      : https://github.com/lm-sensors/lm-sensors/archive/V3-5-0.tar.gz
 Source0  : https://github.com/lm-sensors/lm-sensors/archive/V3-5-0.tar.gz
 Summary  : No detailed summary available
 Group    : Development/Tools
 License  : GPL-2.0 LGPL-2.1
+Requires: lm-sensors-bin = %{version}-%{release}
 Requires: lm-sensors-license = %{version}-%{release}
+Requires: lm-sensors-plugins = %{version}-%{release}
 BuildRequires : bison
 BuildRequires : flex
+Patch1: build.patch
 
 %description
 OVERVIEW OF THE LM-SENSORS PACKAGE
@@ -20,6 +23,33 @@ OVERVIEW OF THE LM-SENSORS PACKAGE
 The lm-sensors package, version 3, provides user-space support for the
 hardware monitoring drivers in Linux 2.6.5 and later. For older kernel
 versions, you have to use lm-sensors version 2.
+
+%package bin
+Summary: bin components for the lm-sensors package.
+Group: Binaries
+Requires: lm-sensors-license = %{version}-%{release}
+
+%description bin
+bin components for the lm-sensors package.
+
+
+%package dev
+Summary: dev components for the lm-sensors package.
+Group: Development
+Requires: lm-sensors-bin = %{version}-%{release}
+Provides: lm-sensors-devel = %{version}-%{release}
+
+%description dev
+dev components for the lm-sensors package.
+
+
+%package doc
+Summary: doc components for the lm-sensors package.
+Group: Documentation
+
+%description doc
+doc components for the lm-sensors package.
+
 
 %package license
 Summary: license components for the lm-sensors package.
@@ -29,30 +59,78 @@ Group: Default
 license components for the lm-sensors package.
 
 
+%package plugins
+Summary: plugins components for the lm-sensors package.
+Group: Default
+
+%description plugins
+plugins components for the lm-sensors package.
+
+
 %prep
 %setup -q -n lm-sensors-3-5-0
+%patch1 -p1
 
 %build
 export http_proxy=http://127.0.0.1:9/
 export https_proxy=http://127.0.0.1:9/
 export no_proxy=localhost,127.0.0.1,0.0.0.0
 export LANG=C
-export SOURCE_DATE_EPOCH=1546267094
+export SOURCE_DATE_EPOCH=1546267448
 make  %{?_smp_mflags}
 
 
 %install
-export SOURCE_DATE_EPOCH=1546267094
+export SOURCE_DATE_EPOCH=1546267448
 rm -rf %{buildroot}
 mkdir -p %{buildroot}/usr/share/package-licenses/lm-sensors
 cp COPYING %{buildroot}/usr/share/package-licenses/lm-sensors/COPYING
 cp COPYING.LGPL %{buildroot}/usr/share/package-licenses/lm-sensors/COPYING.LGPL
 %make_install
+## install_append content
+mkdir -p %{buildroot}/usr/share/doc/lm-sensors/examples
+cp -a %{buildroot}/etc  %{buildroot}/usr/share/doc/lm-sensors/examples
+## install_append end
 
 %files
 %defattr(-,root,root,-)
+/usr/man/man1/sensors.1
+/usr/man/man3/libsensors.3
+/usr/man/man5/sensors.conf.5
+/usr/man/man5/sensors3.conf.5
+/usr/man/man8/fancontrol.8
+/usr/man/man8/isadump.8
+/usr/man/man8/isaset.8
+/usr/man/man8/pwmconfig.8
+/usr/man/man8/sensors-conf-convert.8
+/usr/man/man8/sensors-detect.8
+
+%files bin
+%defattr(-,root,root,-)
+/usr/bin/fancontrol
+/usr/bin/isadump
+/usr/bin/isaset
+/usr/bin/pwmconfig
+/usr/bin/sensors
+/usr/bin/sensors-conf-convert
+/usr/bin/sensors-detect
+
+%files dev
+%defattr(-,root,root,-)
+/usr/include/sensors/error.h
+/usr/include/sensors/sensors.h
+/usr/lib/libsensors.so
+
+%files doc
+%defattr(0644,root,root,0755)
+%doc /usr/share/doc/lm\-sensors/*
 
 %files license
 %defattr(0644,root,root,0755)
 /usr/share/package-licenses/lm-sensors/COPYING
 /usr/share/package-licenses/lm-sensors/COPYING.LGPL
+
+%files plugins
+%defattr(-,root,root,-)
+/usr/lib/libsensors.so.5
+/usr/lib/libsensors.so.5.0.0

@@ -1,0 +1,11 @@
+--- lm-sensors-3-5-0/Makefile~	2018-11-23 17:05:48.000000000 +0000
++++ lm-sensors-3-5-0/Makefile	2018-12-31 14:42:43.713285369 +0000
+@@ -42,7 +42,7 @@
+ DESTDIR :=
+ 
+ # This is the prefix that will be used for almost all directories below.
+-PREFIX := /usr/local
++PREFIX := /usr
+ 
+ # Your C compiler
+ CC := gcc
