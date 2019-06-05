@@ -4,7 +4,7 @@
 #
 Name     : lm-sensors
 Version  : 3.5.0
-Release  : 3
+Release  : 4
 URL      : https://github.com/lm-sensors/lm-sensors/archive/V3-5-0.tar.gz
 Source0  : https://github.com/lm-sensors/lm-sensors/archive/V3-5-0.tar.gz
 Summary  : No detailed summary available
