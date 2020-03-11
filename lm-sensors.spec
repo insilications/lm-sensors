@@ -4,7 +4,7 @@
 #
 Name     : lm-sensors
 Version  : 3.6.0
-Release  : 5
+Release  : 6
 URL      : https://github.com/lm-sensors/lm-sensors/archive/V3-6-0/lm-sensors-3.6.0.tar.gz
 Source0  : https://github.com/lm-sensors/lm-sensors/archive/V3-6-0/lm-sensors-3.6.0.tar.gz
 Summary  : No detailed summary available
@@ -13,6 +13,7 @@ License  : GPL-2.0 LGPL-2.1
 Requires: lm-sensors-bin = %{version}-%{release}
 Requires: lm-sensors-lib = %{version}-%{release}
 Requires: lm-sensors-license = %{version}-%{release}
+Requires: lm-sensors-services = %{version}-%{release}
 BuildRequires : bison
 BuildRequires : flex
 Patch1: build.patch
@@ -28,6 +29,7 @@ versions, you have to use lm-sensors version 2.
 Summary: bin components for the lm-sensors package.
 Group: Binaries
 Requires: lm-sensors-license = %{version}-%{release}
+Requires: lm-sensors-services = %{version}-%{release}
 
 %description bin
 bin components for the lm-sensors package.
@@ -70,8 +72,17 @@ Group: Default
 license components for the lm-sensors package.
 
 
+%package services
+Summary: services components for the lm-sensors package.
+Group: Systemd services
+
+%description services
+services components for the lm-sensors package.
+
+
 %prep
 %setup -q -n lm-sensors-3-6-0
+cd %{_builddir}/lm-sensors-3-6-0
 %patch1 -p1
 
 %build
@@ -79,7 +90,7 @@ export http_proxy=http://127.0.0.1:9/
 export https_proxy=http://127.0.0.1:9/
 export no_proxy=localhost,127.0.0.1,0.0.0.0
 export LANG=C.UTF-8
-export SOURCE_DATE_EPOCH=1571676572
+export SOURCE_DATE_EPOCH=1583896865
 export GCC_IGNORE_WERROR=1
 export AR=gcc-ar
 export RANLIB=gcc-ranlib
@@ -92,7 +103,7 @@ make  %{?_smp_mflags}
 
 
 %install
-export SOURCE_DATE_EPOCH=1571676572
+export SOURCE_DATE_EPOCH=1583896865
 rm -rf %{buildroot}
 mkdir -p %{buildroot}/usr/share/package-licenses/lm-sensors
 cp %{_builddir}/lm-sensors-3-6-0/COPYING %{buildroot}/usr/share/package-licenses/lm-sensors/06877624ea5c77efe3b7e39b0f909eda6e25a4ec
@@ -101,6 +112,7 @@ cp %{_builddir}/lm-sensors-3-6-0/COPYING.LGPL %{buildroot}/usr/share/package-lic
 ## install_append content
 mkdir -p %{buildroot}/usr/share/doc/lm-sensors/examples
 cp -a %{buildroot}/etc  %{buildroot}/usr/share/doc/lm-sensors/examples
+install -D -m644 prog/init/*.service -t %{buildroot}/usr/lib/systemd/system
 ## install_append end
 
 %files
@@ -145,3 +157,9 @@ cp -a %{buildroot}/etc  %{buildroot}/usr/share/doc/lm-sensors/examples
 %defattr(0644,root,root,0755)
 /usr/share/package-licenses/lm-sensors/01a6b4bf79aca9b556822601186afab86e8c4fbf
 /usr/share/package-licenses/lm-sensors/06877624ea5c77efe3b7e39b0f909eda6e25a4ec
+
+%files services
+%defattr(-,root,root,-)
+/usr/lib/systemd/system/fancontrol.service
+/usr/lib/systemd/system/lm_sensors.service
+/usr/lib/systemd/system/sensord.service
