@@ -1,5 +1,6 @@
 PKG_NAME := lm-sensors
-URL = https://github.com/lm-sensors/lm-sensors/archive/V3-6-0/lm-sensors-3.6.0.tar.gz
+URL = https://github.com/lm-sensors/lm-sensors.git
 ARCHIVES = 
+ARCHIVES_GIT = 
 
 include ../common/Makefile.common

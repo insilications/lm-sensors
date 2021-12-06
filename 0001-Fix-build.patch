@@ -1,0 +1,51 @@
+From ea2bc5f3ddb5f10e5e7e1b6437ea4aa57e19447b Mon Sep 17 00:00:00 2001
+From: Francisco Boni <boboniboni@gmail.com>
+Date: Mon, 6 Dec 2021 05:21:10 -0300
+Subject: [PATCH] Fix build
+
+---
+ Makefile  | 6 +++---
+ version.h | 2 +-
+ 2 files changed, 4 insertions(+), 4 deletions(-)
+
+diff --git a/Makefile b/Makefile
+index 47ffe788..00fc067a 100644
+--- a/Makefile
++++ b/Makefile
+@@ -42,7 +42,7 @@ DEBUG := 0
+ DESTDIR :=
+ 
+ # This is the prefix that will be used for almost all directories below.
+-PREFIX := /usr/local
++PREFIX := /usr
+ 
+ # Your C compiler
+ CC := gcc
+@@ -53,7 +53,7 @@ ETCDIR := /etc
+ 
+ # You should not need to change this. It is the directory into which the
+ # library files (both static and shared) will be installed.
+-LIBDIR := $(PREFIX)/lib
++LIBDIR := $(PREFIX)/lib64
+ 
+ EXLDFLAGS := -Wl,-rpath,$(LIBDIR)
+ 
+@@ -141,7 +141,7 @@ ifeq ($(DEBUG),1)
+ ALL_CPPFLAGS += -DDEBUG
+ ALL_CFLAGS += -O -g
+ else
+-ALL_CFLAGS += -O2
++ALL_CFLAGS += -O3
+ endif
+ 
+ ifeq ($(WARN),1)
+diff --git a/version.h b/version.h
+index 9dfb4abb..294feda6 100644
+--- a/version.h
++++ b/version.h
+@@ -1 +1 @@
+-#define LM_VERSION "3.6.0+git"
++#define LM_VERSION "3.6.0"
+-- 
+2.34.0
+
